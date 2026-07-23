@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoLuz - Dicas de Energia</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(#0a1628, #0d2b45, #133c55);
+      color: #e0f2fe;
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* CABEÇALHO */
+    header {
+      text-align: center;
+      background: rgba(8, 27, 51, 0.8);
+      border: 1px solid #38b6ff44;
+      border-radius: 16px;
+      padding: 30px 20px;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.2em;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      color: #8ab4f8;
+      font-size: 1em;
+    }
+
+    nav {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #8ab4f8;
+      text-decoration: none;
+      padding: 8px 18px;
+      border: 1px solid #38b6ff44;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9em;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background: #00f2fe22;
+      border-color: #00f2fe;
+      color: #fff;
+    }
+
+    /* DESTAQUE */
+    .destaque {
+      background: linear-gradient(90deg, #0d2b45cc, #0f3c5ccc);
+      border-left: 4px solid #00f2fe;
+      border-radius: 12px;
+      padding: 20px 25px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .destaque strong {
+      color: #00f2fe;
+    }
+
+    /* TÍTULOS DE SEÇÃO */
+    .titulo-secao {
+      text-align: center;
+      font-size: 1.6em;
+      margin: 40px 0 10px 0;
+      color: #fff;
+    }
+
+    .subtitulo {
+      text-align: center;
+      color: #9cbce5;
+      font-size: 0.9em;
+      margin-bottom: 30px;
+    }
+
+    /* GRADE DE LÂMPADAS */
+    .grid-lampadas {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px 20px;
+      justify-items: center;
+    }
+
+    .lampada {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .lampada:hover {
+      transform: translateY(-5px);
+    }
+
+    .lampada-bulbo {
+      width: 140px;
+      height: 150px;
+      background: radial-gradient(circle at 40% 30%, #ffffc844, #38b6ff33 60%, transparent 80%);
+      border: 2px solid #38b6ff55;
+      border-radius: 70px 70px 15px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 10px;
+      transition: 0.4s;
+      position: relative;
+    }
+
+    .lampada-icone {
+      font-size: 1.8em;
+      margin-bottom: 5px;
+    }
+
+    .lampada-numero {
+      font-size: 0.6em;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #38b6ff;
+      text-transform: uppercase;
+    }
+
+    .lampada-titulo {
+      font-size: 0.8em;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      margin-top: 3px;
+    }
+
+    .lampada-texto {
+      display: none;
+      background: #091e36;
+      border: 1px solid #38b6ff55;
+      border-radius: 10px;
+      padding: 12px 15px;
+      font-size: 0.85em;
+      color: #c0d8f0;
+      margin-top: 8px;
+      width: 220px;
+      text-align: center;
+    }
+
+    /* LÂMPADA ACESA */
+    .lampada.acesa .lampada-bulbo {
+      border-color: #ffd700;
+      box-shadow: 0 0 30px #ffd70044, inset 0 0 30px #ffd70022;
+      background: radial-gradient(circle at 40% 30%, #ffffcc88, #ffd70044 60%, transparent 80%);
+    }
+
+    .lampada.acesa .lampada-texto {
+      display: block;
+      border-color: #ffd700;
+    }
+
+    .lampada.acesa .lampada-icone {
+      filter: drop-shadow(0 0 8px #ffd700);
+    }
+
+    /* BASE DA LÂMPADA */
+    .lampada-base {
+      width: 40px;
+      height: 22px;
+      background: linear-gradient(#2a4a6a, #1a2a3a);
+      border-radius: 0 0 6px 6px;
+      border: 1px solid #38b6ff33;
+      border-top: none;
+      margin-top: -2px;
+    }
+
+    .lampada-base:after {
+      content: '';
+      display: block;
+      width: 12px;
+      height: 5px;
+      background: #2a4a6a;
+      border-radius: 0 0 3px 3px;
+      border: 1px solid #38b6ff22;
+      border-top: none;
+      margin: 16px auto 0;
+    }
+
+    /* GRADE DE ENERGIAS */
+    .grid-energias {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card-energia {
+      background: #091e36b3;
+      border: 1px solid #38b6ff33;
+      border-radius: 14px;
+      padding: 20px;
+      transition: 0.3s;
+    }
+
+    .card-energia:hover {
+      transform: translateY(-3px);
+      border-color: #00f2fe88;
+    }
+
+    .card-energia .icone {
+      font-size: 2em;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .card-energia h3 {
+      color: #fff;
+      font-size: 1.1em;
+      margin-bottom: 8px;
+    }
+
+    .card-energia p {
+      color: #9cbce5;
+      font-size: 0.88em;
+    }
+
+    .card-energia .tag {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 0.7em;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: #00f2fe1a;
+      color: #00f2fe;
+      border: 1px solid #00f2fe33;
+    }
+
+    /* RODAPÉ */
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #38b6ff1a;
+      color: #8ab4f8;
+      font-size: 0.85em;
+      opacity: 0.7;
+    }
+
+    /* RESPONSIVO */
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.6em; }
+      .titulo-secao { font-size: 1.3em; }
+      .lampada-bulbo { width: 120px; height: 130px; }
+      .lampada-texto { width: 190px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- CABEÇALHO -->
+  <header>
+    <h1>💡 EcoLuz</h1>
+    <p>Pequenos hábitos que fazem grande diferença no consumo de energia</p>
+    <nav>
+      <a href="#habitos">💡 Hábitos</a>
+      <a href="#renovavel">🌱 Energia Renovável</a>
+    </nav>
+  </header>
+
+  <!-- DESTAQUE -->
+  <div class="destaque">
+    <p>⚡ <strong>Você sabia?</strong> Pequenas mudanças na rotina podem reduzir em até <strong>30%</strong> sua conta de luz. E com energia renovável, a gente cuida do planeta também!</p>
+  </div>
+
+  <!-- SEÇÃO 1: HÁBITOS -->
+  <h2 class="titulo-secao" id="habitos">💡 Hábitos em Lâmpadas</h2>
+  <p class="subtitulo">Clique na lâmpada para acender e ler a dica</p>
+
+  <div class="grid-lampadas">
+
+    <div class="lampada" onclick="this.classList.toggle('acesa')">
+      <div class="lampada-bulbo">
+        <span class="lampada-icone">💡</span>
+        <span class="lampada-numero">Hábito 01</span>
+        <span class="lampada-titulo">Luz Natural</span>
+      </div>
+      <div class="lampada-base"></div>
+      <div class="lampada-texto">Abra cortinas e persianas durante o dia. A luz natural é de graça e ainda melhora seu bem-estar!</div>
+    </div>
+
+    <div class="lampada" onclick="this.classList.toggle('acesa')">
+      <div class="lampada-bulbo">
+        <span class="lampada-icone">💡</span>
+        <span class="lampada-numero">Hábito 02</span>
+        <span class="lampada-titulo">Consumo Fantasma</span>
+      </div>
+      <div class="lampada-base"></div>
+      <div class="lampada-texto">Aparelhos em standby gastam energia à toa. Use régua com botão e desligue tudo antes de dormir.</div>
+    </div>
+
+    <div class="lampada" onclick="this.classList.toggle('acesa')">
+      <div class="lampada-bulbo">
+        <span class="lampada-icone">💡</span>
+        <span class="lampada-numero">Hábito 03</span>
+        <span class="lampada-titulo">Banho Rápido</span>
+      </div>
+      <div class="lampada-base"></div>
+      <div class="lampada-texto">Reduza o banho de 12 para 6 minutos. O chuveiro elétrico é um dos que mais consome energia na casa.</div>
+    </div>
+
+    <div class="lampada" onclick="this.classList.toggle('acesa')">
+      <div class="lampada-bulbo">
+        <span class="lampada-icone">💡</span>
+        <span class="lampada-numero">Hábito 04</span>
+        <span class="lampada-titulo">Geladeira</span>
+      </div>
+      <div class="lampada-base"></div>
+      <div class="lampada-texto">Não fique com a porta aberta pensando. Mantenha a borracha de vedação limpa e evite colocar comida quente.</div>
+    </div>
+
+    <div class="lampada" onclick="this.classList.toggle('acesa')">
+      <div class="lampada-bulbo">
+        <span class="lampada-icone">💡</span>
+        <span class="lampada-numero">Hábito 05</span>
+        <span class="lampada-titulo">Lâmpadas LED</span>
+      </div>
+      <div class="lampada-base"></div>
+      <div class="lampada-texto">Troque as lâmpadas comuns por LED. Elas gastam 80% menos energia e duram muito mais tempo.</div>
+    </div>
+
+    <div class="lampada" onclick="this.classList.toggle('acesa')">
+      <div class="lampada-bulbo">
+        <span class="lampada-icone">💡</span>
+        <span class="lampada-numero">Hábito 06</span>
+        <span class="lampada-titulo">Máquina Cheia</span>
+      </div>
+      <div class="lampada-base"></div>
+      <div class="lampada-texto">Acumule roupas para lavar tudo de uma vez. A máquina gasta a mesma energia esteja cheia ou pela metade.</div>
+    </div>
+
+  </div>
+
+  <!-- SEÇÃO 2: ENERGIA RENOVÁVEL -->
+  <h2 class="titulo-secao" id="renovavel">🌱 Energia Renovável & Limpa</h2>
+  <p class="subtitulo">Conheça as fontes de energia que não poluem o planeta</p>
+
+  <div class="grid-energias">
+
+    <div class="card-energia">
+      <span class="icone">☀️</span>
+      <h3>Energia Solar</h3>
+      <p>Usa a luz do sol para gerar eletricidade. É abundante, limpa e cada vez mais barata. Perfeita para casas e empresas.</p>
+      <span class="tag">100% Limpa</span>
+    </div>
+
+    <div class="card-energia">
+      <span class="icone">🌬️</span>
+      <h3>Energia Eólica</h3>
+      <p>Gerada pelo vento através de hélices gigantes. O Brasil tem um dos maiores potenciais eólicos do mundo, especialmente no Nordeste.</p>
+      <span class="tag">Inesgotável</span>
+    </div>
+
+    <div class="card-energia">
+      <span class="icone">🌊</span>
+      <h3>Hidrelétrica</h3>
+      <p>Usa a força da água para gerar energia. Cerca de 65% da energia do Brasil vem de hidrelétricas. É limpa e renovável.</p>
+      <span class="tag">Baixo Carbono</span>
+    </div>
+
+    <div class="card-energia">
+      <span class="icone">🔥</span>
+      <h3>Biomassa</h3>
+      <p>Aproveita resíduos como bagaço de cana e cavacos de madeira para gerar energia. Transforma lixo em eletricidade!</p>
+      <span class="tag">Resíduos → Energia</span>
+    </div>
+
+    <div class="card-energia">
+      <span class="icone">🌍</span>
+      <h3>Geotérmica</h3>
+      <p>Aproveita o calor de dentro da Terra. Funciona 24 horas por dia, não depende do clima e tem emissão quase zero.</p>
+      <span class="tag">24h / 7 dias</span>
+    </div>
+
+    <div class="card-energia">
+      <span class="icone">💧</span>
+      <h3>Hidrogênio Verde</h3>
+      <p>Produzido com água e energia renovável. É o combustível do futuro: não polui e pode substituir gasolina e diesel.</p>
+      <span class="tag">Futuro Sustentável</span>
+    </div>
+
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer>
+    <p>EcoLuz — Guia simples de economia de energia e fontes renováveis</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
+
